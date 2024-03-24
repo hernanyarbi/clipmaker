@@ -11,17 +11,20 @@ interface State {
   video: File | null;
   clips: Clip[];
   status: number;
+  jumpTime: number;
 }
 
 type Action =
   | { type: "SET_VIDEO"; payload: File }
   | { type: "ADD_CLIP"; payload: Clip }
+  | { type: "JUMP_TIME"; payload: { jumpTime: number } }
   | { type: "CLEAR_CLIPS" };
 
 const initialState: State = {
   video: null,
   clips: [],
   status: 0,
+  jumpTime: 0,
 };
 
 const VideoContext = createContext<
@@ -34,6 +37,8 @@ const videoReducer = (state: State, action: Action): State => {
       return { ...state, video: action.payload, status: 1 };
     case "ADD_CLIP":
       return { ...state, clips: [...state.clips, action.payload] };
+    case "JUMP_TIME":
+      return { ...state, jumpTime: action.payload.jumpTime };
     case "CLEAR_CLIPS":
       return { ...state, clips: [] };
     default:
@@ -41,7 +46,7 @@ const videoReducer = (state: State, action: Action): State => {
   }
 };
 
-export const VideoProvider: React.FC = ({ children }: any) => {
+export const VideoProvider = ({ children }: { children: any }) => {
   const [state, dispatch] = useReducer(videoReducer, initialState);
   return (
     <VideoContext.Provider value={{ state, dispatch }}>

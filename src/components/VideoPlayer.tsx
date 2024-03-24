@@ -1,9 +1,11 @@
 import { useVideoContext } from "@/contexts/VideoClipContext";
 import React, { useRef, useEffect, useState } from "react";
 import VideoPlayerControls from "./VideoPlayerControls";
+import { formatTime } from "@/utils/helper";
+import useVideoClip from "@/hooks/useVideoClip";
 
 export const VideoPlayer: React.FC = () => {
-  const { state } = useVideoContext();
+  const { state } = useVideoClip();
   const [currentTime, setCurrentTime] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -13,12 +15,11 @@ export const VideoPlayer: React.FC = () => {
     }
   };
 
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes.toString().padStart(2, "0")}:${seconds
-      .toString()
-      .padStart(2, "0")}`;
+  const jumpToTime = (time: number) => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = time;
+      videoRef.current.play(); // Reproducir el video desde el nuevo tiempo
+    }
   };
 
   useEffect(() => {
@@ -26,6 +27,10 @@ export const VideoPlayer: React.FC = () => {
       videoRef.current?.play();
     }
   }, [state.video]);
+
+  useEffect(() => {
+    jumpToTime(state.jumpTime);
+  }, [state.jumpTime]);
 
   return (
     <div className="relative col-span-2">

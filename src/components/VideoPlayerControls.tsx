@@ -47,23 +47,24 @@ const VideoPlayerControls = ({
     }
   };
 
-  const handleClipVideo = () => {
+  const handleClipVideo = async () => {
     if (videoRef.current) {
       if (clipData.start === null) {
-        setShowPopup(true);
+        await setClipData({ start: videoRef.current.currentTime });
       } else {
-        createClip(clipData.name, clipData.start, videoRef.current.currentTime);
-        setClipData({
-          name: "",
-          start: null,
-        });
+        videoRef.current.pause();
+        setShowPopup(true);
       }
     }
   };
 
   const handleSaveName = (name: string) => {
     if (videoRef.current) {
-      setClipData({ name, start: videoRef.current.currentTime });
+      createClip(name, clipData.start, videoRef.current.currentTime);
+      setClipData({
+        name: "",
+        start: null,
+      });
       setShowPopup(false);
     }
   };
@@ -80,7 +81,9 @@ const VideoPlayerControls = ({
         -10s
         <BackVideo width={24} />
       </button>
-      <span>{currentTime}</span>
+      <span className={`${clipData.start !== null ? "text-blue-700" : ""}`}>
+        {currentTime}
+      </span>
       <button
         onClick={handleSkipForward}
         className=" flex items-center gap-1 text-[12px]"
