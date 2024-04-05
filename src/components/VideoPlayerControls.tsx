@@ -35,15 +35,15 @@ const VideoPlayerControls = ({
     }
   };
 
-  const handleSkipForward = () => {
+  const handleSkipForward = (timeToForward: number) => {
     if (videoRef.current) {
-      videoRef.current.currentTime += 10;
+      videoRef.current.currentTime += timeToForward;
     }
   };
 
-  const handleSkipBackward = () => {
+  const handleSkipBackward = (timeToBackward: number) => {
     if (videoRef.current) {
-      videoRef.current.currentTime -= 10;
+      videoRef.current.currentTime -= timeToBackward;
     }
   };
 
@@ -75,21 +75,35 @@ const VideoPlayerControls = ({
         {isPaying ? <PauseIcon width={24} /> : <PlayIcon width={24} />}
       </button>
       <button
-        onClick={handleSkipBackward}
+        onClick={() => handleSkipBackward(5)}
+        className="flex items-center gap-1 text-[12px]"
+      >
+        -5s
+        <BackVideo width={24} />
+      </button>
+      <button
+        onClick={() => handleSkipBackward(10)}
         className="flex items-center gap-1 text-[12px]"
       >
         -10s
-        <BackVideo width={24} />
+        <BackVideo width={28} />
       </button>
       <span className={`${clipData.start !== null ? "text-blue-700" : ""}`}>
         {currentTime}
       </span>
       <button
-        onClick={handleSkipForward}
+        onClick={() => handleSkipForward(10)}
+        className=" flex items-center gap-1 text-[12px]"
+      >
+        <AdvanceVideo width={28} />
+        +10s
+      </button>
+      <button
+        onClick={() => handleSkipForward(5)}
         className=" flex items-center gap-1 text-[12px]"
       >
         <AdvanceVideo width={24} />
-        +10s
+        +5s
       </button>
       <button onClick={handleClipVideo}>
         <CutIcon

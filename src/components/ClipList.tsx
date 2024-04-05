@@ -11,7 +11,7 @@ const ClipList = () => {
     downloadClip(clip.start, clip.end, clip.name);
   };
   return (
-    <div className="overflow-y-auto max-h-64 flex flex-col gap-2 p-2">
+    <div className="overflow-y-auto  flex flex-col gap-2 p-2">
       {clips.map((clip, index) => (
         <div
           key={index}
