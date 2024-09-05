@@ -1,6 +1,5 @@
 import { VideoClipView } from "@/components/VideoClipView";
 import { VideoProvider } from "@/contexts/VideoClipContext";
-import Image from "next/image";
 
 export default function Home() {
   return (
