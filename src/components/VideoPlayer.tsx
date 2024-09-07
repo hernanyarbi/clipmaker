@@ -7,7 +7,7 @@ import useVideoClip from "@/hooks/useVideoClip";
 export const VideoPlayer: React.FC = () => {
   const { state } = useVideoClip();
   const [currentTime, setCurrentTime] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const updateTime = () => {
     if (videoRef.current) {

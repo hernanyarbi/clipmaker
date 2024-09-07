@@ -1,15 +1,24 @@
 import useVideoClip from "@/hooks/useVideoClip";
-import React from "react";
-// import { DownloadButton } from "./icons/DownloadButton";
+import React, { useEffect } from "react";
 import { formatTime } from "@/utils/helper";
+import { useFFmpeg } from "@/hooks/useFFmpeg";
+import { DownloadButton } from "./icons/DownloadButton";
 
 const ClipList = () => {
-  const { state, downloadClip, downloadTxtFile, jumpToTime } = useVideoClip();
+  const {load, loaded, transcode} = useFFmpeg()
+  const { state, downloadTxtFile, jumpToTime } = useVideoClip();
   const { clips } = state;
 
+
   const download = (clip: any) => {
-    downloadClip(clip.start, clip.end, clip.name);
+    transcode(clip.start, clip.end, clip.name);
   };
+
+  useEffect(()=>{
+    load()
+  },[])
+
+
   return (
     <div className="overflow-y-auto  flex flex-col gap-2 p-2">
       {clips.map((clip, index) => (
@@ -27,9 +36,9 @@ const ClipList = () => {
             </span>
             <span className="text-gray-300 font-popins">{clip.name}</span>
           </div>
-          {/* <button className="rounded-lg bg-gray-800 px-1">
+          {loaded && <button className="rounded-lg bg-gray-800 px-1">
             <DownloadButton width={24} onClick={() => download(clip)} />
-          </button> */}
+          </button>}
         </div>
       ))}
       <button
